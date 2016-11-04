@@ -1,0 +1,6 @@
+# Mark the commands below to be run as a batch
+batch
+
+
+#Execute the batch
+run-batch

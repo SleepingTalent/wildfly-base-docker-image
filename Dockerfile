@@ -3,11 +3,11 @@ FROM jboss/wildfly:latest
 ENV WILDFLY_MANAGEMENT_USER admin
 ENV WILDFLY_MANAGEMENT_PASSWORD admin
 
-ENV ARTIFACT_NAME
+ENV ARTIFACT_NAME node-info.war
 ENV WAIT_TIME_SECS 30
 ENV NETWORK_MODE bridge
 
-ENV JBOSS_CONFIG_FILE
+ENV JBOSS_CONFIG_FILE standalone.xml
 
 ADD ${ARTIFACT_NAME} /opt/jboss/wildfly/standalone/deployments/
 ADD wait-for-it.sh /opt/jboss/wildfly/
