@@ -1,0 +1,28 @@
+batch
+#Add system property
+/system-property=solr.server.url:add(value=@SOLR_URL@)
+/system-property=solr.index.user:add(value=@SOLR_USER@)
+/system-property=solr.index.password:add(value=@SOLR_PASSWORD@)
+
+/system-property=solr.db.url:add(value=@DB_URL@)
+/system-property=solr.db.user:add(value=@DB_USER@)
+/system-property=solr.db.password:add(value=@DB_PASSWORD@)
+
+/system-property=solr.solr.home:add(value=@SOLR_HOME@)
+
+#Configure mod_cluster
+/subsystem=modcluster/mod-cluster-config=configuration/:write-attribute(name=advertise,value=false
+/subsystem=modcluster/mod-cluster-config=configuration/:write-attribute(name=proxies,value=[proxy1]
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=proxy1:add(host=@MODCLUSTER_HOST@,port=@MODCLUSTER_PORT@)
+
+#To create the jboss module for oracle
+module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc7.jar --dependencies=javax.api,javax.transaction.api
+
+#Add the OracleDriver
+/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle,driver-xa-datasource-class-name=oracle.jdbc.driver.OracleDriver)
+
+data-source add --jndi-name=java:/OracleDS --name=OracleDS --connection-url=@DB_URL@ --driver-name=oracle --user-name=@DB_USER@ --password=@DB_PASSWORD@
+
+
+#Execute the batch
+run-batch
