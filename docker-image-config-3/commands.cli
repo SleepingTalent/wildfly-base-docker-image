@@ -1,0 +1,19 @@
+batch
+#To create the jboss module for oracle
+module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc7.jar --dependencies=javax.api,javax.transaction.api
+
+#Add the OracleDriver
+/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle,driver-xa-datasource-class-name=oracle.jdbc.driver.OracleDriver)
+
+data-source add --jndi-name=java:/OracleDS --name=OracleDS --enabled=true --jta=true --use-ccm=false --connection-url=@DB_URL@ --driver-name=oracle --user-name=@DB_USER@ --password=@DB_PASSWORD@
+
+/subsystem=messaging-activemq/server=default/connection-factory=APIInVmConnectionFactory:add(connectors=["in-vm"], entries=["java:/APIConnectionFactory"])
+
+/subsystem=messaging-activemq/server=default/jms-queue=fileUtilRequestQueue:add(durable=false,entries=[java:/jms/queue/fileUtilRequestQueue java:/jboss/exported/jms/queue/fileUtilRequestQueue])
+/subsystem=messaging-activemq/server=default/jms-queue=fileUtilResponseQueue:add(durable=false,entries=[java:/jms/queue/fileUtilResponseQueue java:/jboss/exported/jms/queue/fileUtilResponseQueue])
+
+#/subsystem=messaging-activemq/server=default/security-setting=#:remove
+#/subsystem=messaging-activemq/server=default/security-setting=#:add(enabled=false)
+
+#Execute the batch
+run-batch

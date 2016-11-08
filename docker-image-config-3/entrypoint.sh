@@ -8,11 +8,6 @@ sed -i "s/@DB_URL@/${DB_URL}/" ${JBOSS_HOME}/bin/commands.cli
 sed -i "s/@DB_USER@/${DB_USER}/" ${JBOSS_HOME}/bin/commands.cli
 sed -i "s/@DB_PASSWORD@/${DB_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
 
-sed -i "s/@SOLR_URL@/${SOLR_URL}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@SOLR_INDEX_USER@/${SOLR_INDEX_USER}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@SOLR_INDEX_PASSWORD@/${SOLR_INDEX_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@SOLR_HOME@/${SOLR_HOME}/" ${JBOSS_HOME}/bin/commands.cli
-
 if [ "${NETWORK_MODE}" = "host" ]
 then
 	IPADDR=$(ip a s eth0 | sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}')
