@@ -1,8 +1,8 @@
 batch
 #Add system property
 /system-property=solr.server.url:add(value=@SOLR_URL@)
-/system-property=solr.index.user:add(value=@SOLR_USER@)
-/system-property=solr.index.password:add(value=@SOLR_PASSWORD@)
+/system-property=solr.index.user:add(value=@SOLR_INDEX_USER@)
+/system-property=solr.index.password:add(value=@SOLR_INDEX_PASSWORD@)
 
 #Configure mod_cluster
 /subsystem=modcluster/mod-cluster-config=configuration/:write-attribute(name=advertise,value=false
@@ -15,7 +15,7 @@ module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc7.jar --depende
 #Add the OracleDriver
 /subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle,driver-xa-datasource-class-name=oracle.jdbc.driver.OracleDriver)
 
-data-source add --jndi-name=java:/OracleDS --name=OracleDS --connection-url=@DB_URL@ --driver-name=oracle --user-name=@DB_USER@ --password=@DB_PASSWORD@
+data-source add --jndi-name=java:/OracleDS --name=OracleDS --enabled=true --jta=true --use-ccm=false --connection-url=@DB_URL@ --driver-name=oracle --user-name=@DB_USER@ --password=@DB_PASSWORD@
 
 #Add TCPGOSSIP tp JGroups
 /subsystem=jgroups/stack=tcp/:remove-protocol(type=MPING)

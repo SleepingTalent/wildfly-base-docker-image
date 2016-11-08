@@ -1,5 +1,7 @@
 FROM jboss/wildfly:latest
 
+#Docker Image Config for Solr
+
 # Environment Variables -- start
 ENV WILDFLY_MANAGEMENT_USER admin
 ENV WILDFLY_MANAGEMENT_PASSWORD admin
@@ -20,6 +22,7 @@ ENV NETWORK_MODE bridge
 # Environment Variables -- end
 
 ADD ${ARTIFACT_NAME} /opt/jboss/wildfly/standalone/deployments
+ADD ojdbc7.jar /opt/jboss/wildfly/
 
 # Add the docker entrypoint script
 ADD entrypoint.sh /opt/jboss/wildfly/bin/entrypoint.sh
@@ -35,6 +38,7 @@ RUN yum -y install /sbin/ip
 RUN rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history
 
 RUN chown -R jboss:jboss /opt/jboss/wildfly
+RUN chmod +x /opt/jboss/wildfly/ojdbc7.jar
 RUN chmod +x /opt/jboss/wildfly/bin/entrypoint.sh
 RUN chmod +x /opt/jboss/wildfly/bin/commands.cli
 USER jboss

@@ -9,14 +9,9 @@ sed -i "s/@DB_USER@/${DB_USER}/" ${JBOSS_HOME}/bin/commands.cli
 sed -i "s/@DB_PASSWORD@/${DB_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
 
 sed -i "s/@SOLR_URL@/${SOLR_URL}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@SOLR_USER@/${SOLR_USER}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@SOLR_PASSWORD@/${SOLR_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
-
-sed -i "s/@MODCLUSTER_HOST@/${MODCLUSTER_HOST}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@MODCLUSTER_PORT@/${MODCLUSTER_PORT}/" ${JBOSS_HOME}/bin/commands.cli
-
-sed -i "s/@GOSSIP_ROUTER_HOST@/${GOSSIP_ROUTER_HOST}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@GOSSIP_ROUTER_PORT@/${GOSSIP_ROUTER_PORT}/" ${JBOSS_HOME}/bin/commands.cli
+sed -i "s/@SOLR_INDEX_USER@/${SOLR_INDEX_USER}/" ${JBOSS_HOME}/bin/commands.cli
+sed -i "s/@SOLR_INDEX_PASSWORD@/${SOLR_INDEX_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
+sed -i "s/@SOLR_HOME@/${SOLR_HOME}/" ${JBOSS_HOME}/bin/commands.cli
 
 if [ "${NETWORK_MODE}" = "host" ]
 then
@@ -28,10 +23,6 @@ fi
 echo "=> configuration-process: starting WildFly server"
 ${JBOSS_HOME}/bin/standalone.sh -c ${JBOSS_CONFIG} -Djboss.bind.address=$IPADDR -Djboss.bind.address.management=$IPADDR -Djboss.bind.address.private=$IPADDR -Djboss.node.name=$HOSTNAME-$IPADDR > /dev/null &
 echo "=> configuration-process: waiting for WildFly to start on $IPADDR"
-
-echo "=> configuration-process: sleeping for ${WAIT_TIME_SECS} seconds"
-sleep ${WAIT_TIME_SECS}
-echo "=> configuration-process: waking up"
 	
 echo "=> configuration-process: checking that WildFly has started"
 ${JBOSS_HOME}/wait-for-it.sh $IPADDR:9990 -- echo "=> configuration-process: WildFly has started"
