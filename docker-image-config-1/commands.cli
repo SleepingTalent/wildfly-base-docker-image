@@ -18,12 +18,14 @@ module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc7.jar --depende
 data-source add --jndi-name=java:/OracleDS --name=OracleDS --enabled=true --jta=true --use-ccm=false --connection-url=@DB_URL@ --driver-name=oracle --user-name=@DB_USER@ --password=@DB_PASSWORD@
 
 #Add TCPGOSSIP tp JGroups
-/subsystem=jgroups/stack=tcp/:remove-protocol(type=MPING)
 /subsystem=jgroups/stack=tcp/:add-protocol(type=TCPGOSSIP)
-
-/subsystem=jgroups/stack=tcp/protocol=TCPGOSSIP/property=initial_hosts/:add(value="@GOSSIP_ROUTER_HOST@[@GOSSIP_ROUTER_PORT]")
-/subsystem=jgroups/stack=tcp/protocol=TCPGOSSIP/property=timeout/:add(value=3000)
-/subsystem=jgroups/stack=tcp/protocol=TCPGOSSIP/property=num_initial_members/:add(value=1)
+/subsystem=jgroups/stack=tcp/:remove-protocol(type=MPING)
 
 #Execute the batch
 run-batch
+
+/subsystem=jgroups/stack=tcp/protocol=TCPGOSSIP/property=initial_hosts/:add(value="@GOSSIP_ROUTER_HOST@[@GOSSIP_ROUTER_PORT@]")
+/subsystem=jgroups/stack=tcp/protocol=TCPGOSSIP/property=timeout/:add(value=3000)
+/subsystem=jgroups/stack=tcp/protocol=TCPGOSSIP/property=num_initial_members/:add(value=1)
+
+

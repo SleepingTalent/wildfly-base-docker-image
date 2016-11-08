@@ -25,6 +25,8 @@ else
 	IPADDR=$(ip a s | sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}')
 fi
 
+echo "=> configuration-process: using WildFly Config : ${JBOSS_CONFIG}"
+
 echo "=> configuration-process: starting WildFly server"
 ${JBOSS_HOME}/bin/standalone.sh -c ${JBOSS_CONFIG} -Djboss.bind.address=$IPADDR -Djboss.bind.address.management=$IPADDR -Djboss.bind.address.private=$IPADDR -Djboss.node.name=$HOSTNAME-$IPADDR > /dev/null &
 echo "=> configuration-process: waiting for WildFly to start on $IPADDR"
