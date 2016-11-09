@@ -1,0 +1,1 @@
+solrConfig here

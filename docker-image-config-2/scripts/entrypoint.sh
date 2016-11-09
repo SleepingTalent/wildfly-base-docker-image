@@ -11,7 +11,6 @@ sed -i "s/@DB_PASSWORD@/${DB_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
 sed -i "s/@SOLR_URL@/${SOLR_URL}/" ${JBOSS_HOME}/bin/commands.cli
 sed -i "s/@SOLR_INDEX_USER@/${SOLR_INDEX_USER}/" ${JBOSS_HOME}/bin/commands.cli
 sed -i "s/@SOLR_INDEX_PASSWORD@/${SOLR_INDEX_PASSWORD}/" ${JBOSS_HOME}/bin/commands.cli
-sed -i "s/@SOLR_HOME@/${SOLR_HOME}/" ${JBOSS_HOME}/bin/commands.cli
 
 if [ "${NETWORK_MODE}" = "host" ]
 then

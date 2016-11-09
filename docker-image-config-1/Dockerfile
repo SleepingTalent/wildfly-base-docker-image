@@ -20,19 +20,18 @@ ENV MODCLUSTER_PORT 80
 ENV GOSSIP_ROUTER_HOST 0.0.0.0
 ENV GOSSIP_ROUTER_PORT 12001
 
-ENV ARTIFACT_NAME cluster-demo.war
 ENV JBOSS_CONFIG standalone-ha.xml
 
 ENV NETWORK_MODE bridge
 # Environment Variables -- end
 
-ADD ${ARTIFACT_NAME} /opt/jboss/wildfly/standalone/deployments
-ADD ojdbc7.jar /opt/jboss/wildfly/
+ADD deployments /opt/jboss/wildfly/standalone/deployments
+ADD resources/ojdbc7.jar /opt/jboss/wildfly/
 
 # Add the docker entrypoint script
-ADD entrypoint.sh /opt/jboss/wildfly/bin/entrypoint.sh
-ADD wait-for-it.sh /opt/jboss/wildfly/
-ADD commands.cli /opt/jboss/wildfly/bin/commands.cli
+ADD scripts/entrypoint.sh /opt/jboss/wildfly/bin/entrypoint.sh
+ADD scripts/wait-for-it.sh /opt/jboss/wildfly/
+ADD scripts/commands.cli /opt/jboss/wildfly/bin/commands.cli
 
 # Change the ownership of added files/dirs to `jboss`
 USER root

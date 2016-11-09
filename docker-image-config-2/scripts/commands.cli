@@ -8,7 +8,7 @@ batch
 /system-property=solr.db.user:add(value=@DB_USER@)
 /system-property=solr.db.password:add(value=@DB_PASSWORD@)
 
-/system-property=solr.solr.home:add(value=@SOLR_HOME@)
+/system-property=solr.solr.home:add(value=/opt/jboss/solr-search/solr)
 
 #To create the jboss module for oracle
 module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc7.jar --dependencies=javax.api,javax.transaction.api
