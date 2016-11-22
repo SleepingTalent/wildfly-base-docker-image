@@ -23,10 +23,11 @@ ENV GOSSIP_ROUTER_PORT 12001
 ENV JBOSS_CONFIG standalone-ha.xml
 
 ENV NETWORK_MODE bridge
+ENV WAIT_TIME_SECS 60
 # Environment Variables -- end
 
 ADD deployments /opt/jboss/wildfly/standalone/deployments
-ADD resources/ojdbc7.jar /opt/jboss/wildfly/
+ADD resources/ojdbc6.jar /opt/jboss/wildfly/
 
 # Add the docker entrypoint script
 ADD scripts/entrypoint.sh /opt/jboss/wildfly/bin/entrypoint.sh
@@ -42,7 +43,7 @@ RUN yum -y install /sbin/ip
 RUN rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history
 
 RUN chown -R jboss:jboss /opt/jboss/wildfly
-RUN chmod +x /opt/jboss/wildfly/ojdbc7.jar
+RUN chmod +x /opt/jboss/wildfly/ojdbc6.jar
 RUN chmod +x /opt/jboss/wildfly/bin/entrypoint.sh
 RUN chmod +x /opt/jboss/wildfly/bin/commands.cli
 USER jboss

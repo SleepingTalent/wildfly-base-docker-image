@@ -10,16 +10,20 @@ batch
 /socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=proxy1:add(host=@MODCLUSTER_HOST@,port=@MODCLUSTER_PORT@)
 
 #To create the jboss module for oracle
-module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc7.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.oracle --resources=/opt/jboss/wildfly/ojdbc6.jar --dependencies=javax.api,javax.transaction.api
 
 #Add the OracleDriver
-/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle,driver-xa-datasource-class-name=oracle.jdbc.driver.OracleDriver)
+/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle,driver-class-name=oracle.jdbc.driver.OracleDriver)
 
 data-source add --jndi-name=java:/OracleDS --name=OracleDS --enabled=true --jta=true --use-ccm=false --connection-url=@DB_URL@ --driver-name=oracle --user-name=@DB_USER@ --password=@DB_PASSWORD@
+
 
 #Add TCPGOSSIP tp JGroups
 /subsystem=jgroups/stack=tcp/:add-protocol(type=TCPGOSSIP)
 /subsystem=jgroups/stack=tcp/:remove-protocol(type=MPING)
+
+/subsystem=security/security-domain=fdmsSecurity/:add(cache-type=default)
+/subsystem=security/security-domain=fdmsSecurity/authentication=classic:add(login-modules=[{"code"=>"Database", "flag"=>"required", "module-options"=>[("dsJndiName"=>"java:/OracleDS"),("principalsQuery"=>"select password from LOGINS where lower(username)=lower(?)"),("rolesQuery"=>"select q.name, 'Roles' from logins l,(select ug.user_id, r2.name from user_groups ug, group_roles gr, roles r2 where r2.id = gr.role_id and ug.group_id = gr.group_id union select ur.user_id, r.name from user_roles ur, roles r where ur.role_id = r.id) q where q.user_id = l.user_id and lower(l.username)=lower(?)"),("hashAlgorithm"=>"SHA-1"),("hashEncoding"=>"base64"),("hashCharset"=>"UTF-16"),("hashStorePassword"=>"false")]}])
 
 #Execute the batch
 run-batch
